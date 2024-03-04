@@ -5,11 +5,12 @@ import { cookies } from 'next/headers';
 
 export function middleware(request: NextRequest) {
   const cookieStore = cookies();
-  const accessToken = cookieStore.get('accessToken');
+  const refreshToken = cookieStore.get('refreshToken');
   const {pathname} = request.nextUrl;
+  const direction = ['/', '/register', '/login'];
 
-  if (accessToken) {
-    if (pathname === '/' || pathname === '/register' || pathname === '/login') {
+  if (refreshToken?.value) {
+    if (direction.includes(pathname)) {
       return NextResponse.redirect(new URL('/dashboard', request.url))
     }
   } else {

@@ -1,15 +1,15 @@
-'use client'
+"use client";
 import Image from "next/image";
-import { Form } from "../ui/form/form";
 import { AtSymbolIcon } from "@heroicons/react/24/outline";
 import { KeyIcon } from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
 import { FormFieldType, GoToType } from "../lib/type-definitions";
 import { useFormState } from "react-dom";
-import { login } from "../lib/actions/login";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-
+import { login } from "../lib/actions/auth";
+import { Provider } from "react-redux";
+import { parseJwt } from "../lib/util/util";
+import { FormLogin } from "../ui/form/form-login";
+import store from "../lib/store";
 
 const LoginForm: FormFieldType[] = [
   {
@@ -35,25 +35,15 @@ const LoginForm: FormFieldType[] = [
   },
 ];
 
-const GoTo:GoToType = {
-  label: 'Register',
-  des: 'Not have account yet?',
-  href:"/register",
-}
+const GoTo: GoToType = {
+  label: "Register",
+  des: "Not have account yet?",
+  href: "/register",
+};
 
 const LoginPage = () => {
-
-  const router = useRouter();
-  const initialState = {message: null, errors: {} , success: null};
+  const initialState = { message: null, errors: {}, success: null };
   const [state, dispatch] = useFormState(login, initialState);
-
-    useEffect(() => {
-    if (state.message === 'Login successful') {
-      router.push('/dashboard');
-    } else {
-      router.push('/login');
-    }
-  }, [state.message]);
 
   return (
     <main className="flex justify-center items-center p-8 ">
@@ -71,7 +61,14 @@ const LoginPage = () => {
           <h1 className="text-xl font-semibold mb-8">
             Please log in to continue
           </h1>
-          <Form data={LoginForm} dispatch={dispatch} state={state} goTo={GoTo}/>
+          <Provider store={store}>
+            <FormLogin
+              data={LoginForm}
+              dispatch={dispatch}
+              state={state}
+              goTo={GoTo}
+            />
+          </Provider>
         </div>
       </div>
     </main>

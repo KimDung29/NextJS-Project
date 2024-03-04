@@ -1,4 +1,4 @@
-import { createUser } from "@/app/lib/actions/create-user";
+import { createUser } from "@/app/lib/actions/auth";
 import { NextApiRequest, NextApiResponse } from "next";
 
 

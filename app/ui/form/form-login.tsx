@@ -1,9 +1,12 @@
-'use client'
-import { redirect, useRouter } from "next/navigation";
+"use client";
+import { useRouter } from "next/navigation";
 import { FormFieldType, GoToType, State } from "../../lib/type-definitions";
 import clsx from "clsx";
 import Link from "next/link";
-
+import { useEffect } from "react";
+import { parseJwt } from "@/app/lib/util/util";
+import { AuthState, setAuth } from '@/app/lib/redux/auth/authSlice';
+import { useAppDispatch } from '@/app/lib/store';
 
 export interface FormType {
   data: FormFieldType[];
@@ -12,24 +15,18 @@ export interface FormType {
   goTo: GoToType;
 }
 
-export const Form = ({ data, dispatch, state, goTo }: FormType) => {
-
+export const FormLogin = ({ data, dispatch, state, goTo }: FormType) => {
   const router = useRouter();
+  const reduxDispatch = useAppDispatch();
 
+  useEffect(() => {
+      const auth: AuthState = state.accessToken && parseJwt(state.accessToken);
 
-
-  // state?.message === "User created successfully." &&
-  //   state?.success &&
-  //   redirect("/login");
-  // // state?.message === 'Login successful' && state?.success && redirect('/dashboard');
-
-  // useEffect(() => {
-  //   if (state.message === 'Login successful') {
-  //     router.push('/dashboard');
-  //   } else {
-  //     router.push('/login');
-  //   }
-  // }, [state.message]);
+      if (state.message === "Login successful" && state?.success) {
+          reduxDispatch(setAuth(auth));
+          router.push("/dashboard");
+      }
+  }, [state.message, state.success]);
 
   return (
     <div>

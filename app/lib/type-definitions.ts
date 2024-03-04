@@ -27,5 +27,10 @@ export interface State{
     };
     message?: string | null;
     success?: boolean | null;
-    token?: string | null
+    accessToken?: string | null
   };
+  export interface NavBarListRouteType {
+    icon: (i: string) => JSX.Element;
+    href: string;
+    label: string;
+  }

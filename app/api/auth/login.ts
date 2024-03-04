@@ -1,10 +1,8 @@
-import  { login } from "@/app/lib/actions/login";
-import { authMiddleware } from "@/authMiddleware";
+import { login } from "@/app/lib/actions/auth";
 import { NextApiRequest, NextApiResponse } from "next";
 
 
-async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const user = req.customUser;
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
         const formData = req.body;
         const result = await login( {}, formData);
@@ -13,5 +11,3 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         res.status(405).json({ message: 'Method Not Allowed' });
     }
 }
-
-export default handler;

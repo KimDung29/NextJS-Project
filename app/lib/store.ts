@@ -1,7 +1,6 @@
-// store.ts
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
-import authReducer from '@/app/lib/features/auth/authSlice'
+import authReducer from '@/app/lib/redux/auth/authSlice'
 // Define a RootState type
 export type RootState = ReturnType<typeof store.getState>;
 
