@@ -1,10 +1,11 @@
 
+import DashboardHome from "../ui/dashboard/home";
+
+
 const DashboardPage = () => {
 
   return (
-    <div>
-      <div>Dashboard</div>
-    </div>
+      <DashboardHome />
   );
 };
 

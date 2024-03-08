@@ -3,20 +3,17 @@ import Image from "next/image";
 import { AtSymbolIcon, UserIcon } from "@heroicons/react/24/outline";
 import { KeyIcon } from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { FormFieldType, GoToType, State } from "../lib/type-definitions";
-import { useFormState } from "react-dom";
-import { createUser } from "../lib/actions/auth";
-import Link from "next/link";
-import clsx from "clsx";
-import { useEffect } from "react";
+import { FormEvent,useState } from "react";
 import { useRouter } from "next/navigation";
-
+import { postMethod } from "../lib/fetch_api/method";
+import { FormAuthErr, FormFieldType, GoToType } from "../lib/types";
+import FormAuth from "../ui/form/auth";
 
 const RegisterForm: FormFieldType[] = [
   {
     label: "Name",
     type: "text",
-    name: "username",
+    name: "name",
     placeholder: "Enter your name",
     required: false,
     icon: (className: string) => <UserIcon className={`${className}`} />,
@@ -59,15 +56,54 @@ const GoTo: GoToType = {
 
 const RegisterPage = () => {
   const router = useRouter();
-  const initialState:State = { message: null, errors: {}, success: null };
-  const [state, dispatch] = useFormState(createUser, initialState);
 
+  const [err, setErr] = useState({
+    errors: {
+      email: [],
+      password: [],
+      confirm_password: [],
+    },
+    message: "",
+  } as FormAuthErr);
+  
+  const success = err.message === "User created successfully." ? true : false;
+  const message = err.message;
 
-  useEffect(() => {
-      if (state?.message === "User created successfully." && state?.success) {
-        router.push("/login");
+  const handleRegister = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+
+    const formData = new FormData(form);
+    const user = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+      confirm_password: formData.get("confirm_password"),
+    };
+    const fetchData = async () => {
+      try {
+        const res = await postMethod("/auth/register", user);
+        if (!res.ok) {
+          const getErrors = await res.json();
+          setErr(getErrors);
+          throw new Error("Fail to login");
+        } else {
+          const response = await res.json();
+
+          setErr((pre) => ({
+            ...pre,
+            message: response.message,
+          }));
+
+          router.push("/login");
+        }
+      } catch (error) {
+        console.log("err: ", error);
       }
-  }, [state.message, state.success]);
+    };
+    fetchData();
+  };
 
   return (
     <main className="flex justify-center items-center p-8 ">
@@ -83,97 +119,14 @@ const RegisterPage = () => {
         </div>
         <div className="bg-gray-50  rounded-xl mt-4 py-8 px-4 gap-4">
           <h1 className="text-xl font-semibold mb-8">Create an account</h1>
-          <div>
-      {
-        <p
-          className={clsx(
-            "mb-4 text-lg",
-            { "text-blue-700": state?.success },
-            { "text-red-500": !state?.success }
-          )}
-        >
-          {state?.message || ""}
-        </p>
-      }
-      <form action={dispatch}>
-        {RegisterForm.map((item, index) => (
-          <div key={index} className="flex flex-col">
-            {item?.type !== "submit" ? (
-              <div>
-                <label className="mb-4 " htmlFor={item?.name}>
-                  {item?.label}
-                </label>
-                <div className="relative">
-                  <input
-                    type={item?.type}
-                    name={item?.name}
-                    id={item?.name}
-                    placeholder={item?.placeholder}
-                    required={item?.required}
-                    aria-describedby={`${item?.name}-error`}
-                    className="py-3 text-lg border-gray-200 w-full pl-10 rounded-xl focus:outline-none focus:border-none"
-                  />
-                  {typeof item?.icon === "function" &&
-                    item?.icon(
-                      "peer w-[18px] h-[18px] absolute top-1/2 left-3 -translate-y-1/2  text-gray-500 peer-focus:text-gray-900"
-                    )}
-                </div>
-                <div
-                  className="mb-4"
-                  id={`${item?.name}-error`}
-                  aria-live="polite"
-                  aria-atomic="true"
-                >
-                  {item?.name === "email" && state?.errors?.email
-                    ? state?.errors?.email.map((error: string) => (
-                        <p className="mt-2 text-sm text-red-500" key={error}>
-                          {error}
-                        </p>
-                      ))
-                    : null}
-                  {item?.name === "password" && state?.errors?.password
-                    ? state?.errors?.password.map((error: string) => (
-                        <p className="mt-2 text-sm text-red-500" key={error}>
-                          {error}
-                        </p>
-                      ))
-                    : null}
-                  {item?.name === "confirm_password" &&
-                  state?.errors?.confirm_password
-                    ? state?.errors?.confirm_password.map((error: string) => (
-                        <p className="mt-2 text-sm text-red-500" key={error}>
-                          {error}
-                        </p>
-                      ))
-                    : null}
-                </div>
-              </div>
-            ) : (
-              <button
-                type="submit"
-                // disabled={state?.message && state?.success !== null ? true: false}
-                className={clsx(
-                  "flex justify-between items-center py-3 px-4 w-full rounded-xl text-white font-normal",
-                  { "bg-blue-700": state?.success === null },
-                  { "bg-blue-400": state?.success !== null }
-                )}
-              >
-                <p className="">{item?.label}</p>
-                {typeof item?.icon === "function" &&
-                  item?.icon("w-[20px] h-[20px]")}
-              </button>
-            )}
-          </div>
-        ))}
-      </form>
-      <div className="mt-4 text-lg text-center">
-        <span>{GoTo.des}</span>
-        <Link href={GoTo.href} className="text-blue-700 underline">
-          {" "}
-          {GoTo.label}
-        </Link>
-      </div>
-    </div>
+          <FormAuth
+              data={RegisterForm}
+              goTo={GoTo}
+              message={message}
+              success={success}
+              handleSubmit={handleRegister}
+              err={err}
+            />
         </div>
       </div>
     </main>
@@ -181,3 +134,4 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
+

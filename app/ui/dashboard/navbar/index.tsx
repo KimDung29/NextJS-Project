@@ -1,21 +1,16 @@
 "use client";
-import store from "@/app/lib/store";
-import { Provider } from "react-redux";
-import Logout from "../logout";
+import Image from "next/image";
+import { signOut } from "next-auth/react";
+import { NavBarListRouteType } from "@/app/lib/types";
 import {
   ClipboardDocumentIcon,
   HomeIcon,
   UserGroupIcon,
+  ArrowUpRightIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import Image from "next/image";
-import { NavBarListRouteType } from "@/app/lib/type-definitions";
 
-export interface NavBarType {
-  cookie: string,
-}
-
-const List: NavBarListRouteType[] = [
+const NavBarListRoute: NavBarListRouteType[] = [
   {
     icon: (className: string) => <HomeIcon className={`${className}`} />,
     href: "/dashboard",
@@ -34,30 +29,45 @@ const List: NavBarListRouteType[] = [
     label: "Customers",
   },
 ];
-
-const NavBar = ({ cookie }: NavBarType) => {
+const NavBar = () => {
   return (
     <div className="w-40 bg-gray-50  min-h-screen flex flex-col">
       <div className="flex-grow">
         <div className="bg-blue-700 rounded-md">
-          <Image src={'/logo.png'} alt="logo" width={90} height={40} className="ml-8"/>
+          <Image
+            src={"/logo.png"}
+            alt="logo"
+            width={90}
+            height={40}
+            className="ml-8"
+          />
         </div>
+        <div className="pl-4 mt-2"></div>
         <div className="flex flex-col mt-10">
-          {List.map((item, i) => (
-            <div key={"list route" + i} className="flex  hover:text-blue-700 hover:bg-blue-100 pl-4 py-4">
-              {typeof item?.icon === "function" && item?.icon("w-6 h-6")}
-              <Link href={`${item.href}`} className="ml-3">
-                {item.label}
-              </Link>
-            </div>
+          {NavBarListRoute.map((item, i) => (
+            <Link
+              href={`${item.href}`}
+              key={"list route" + i}
+              className="flex items-center py-4 px-2 hover:text-blue-700  hover:bg-blue-100 hover:cursor-pointer"
+            >
+              {typeof item?.icon === "function" &&
+                item?.icon("w-8 h-8  ml-2 ")}
+              <p className="ml-3 ">{item.label}</p>
+            </Link>
           ))}
         </div>
       </div>
-      <Provider store={store}>
-        <div className="h-16">
-          <Logout cookie={cookie} />
+      <div className="h-16">
+        <div
+          onClick={() => signOut()}
+          className="flex  hover:text-blue-700 hover:bg-blue-100 hover:cursor-pointer pl-4 py-4"
+        >
+          <div className="flex items-center justify-center">
+            <p>Sigout</p>
+            <ArrowUpRightIcon className="w-4 h-4 ml-2" />
+          </div>
         </div>
-      </Provider>
+      </div>
     </div>
   );
 };

@@ -2,3 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+
+input[type='email'],
+input[type='password'],
+input[type='text'] {
+    @apply block 
+}
+
+button{
+    @apply flex justify-between items-center py-3 px-4 w-full rounded-xl font-normal border
+}
+
+button[type='submit'], .submit {
+    @apply border-0 
+}

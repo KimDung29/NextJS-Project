@@ -1,8 +1,7 @@
 import "@/app/ui/globals.css";
 import type { Metadata } from "next";
 import { inter } from "@/app/ui/fonts";
-import { Provider } from "react-redux";
-import store from "./lib/store";
+import { SessionContext } from "./ui/SessionContext";
 
 export const metadata: Metadata = {
   title: {
@@ -19,7 +18,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children} </body>
+      <body className={inter.className}>
+          <SessionContext>{children}</SessionContext>
+      </body>
     </html>
   );
 }

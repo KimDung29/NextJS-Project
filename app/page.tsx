@@ -11,13 +11,20 @@ export default function Home() {
       </div>
       <div className="flex items-center p-8 ">
         <div className="flex-1">
-          <div className="ml-8 ">
+          <div className="mx-8 ">
             <h1 className="text-xl font-bold">Welcome to the Next.js project</h1>
             <Link
               href={"/login"}
               className="flex items-center w-32 mt-4 gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
             >
               <span>Login</span> <ArrowRightIcon className="w-5 md:w6" />
+            </Link>
+            <p className="text-center mt-4">or</p>
+            <Link
+              href={"/register"}
+              className="flex items-center w-32 mt-4 gap-5 self-start rounded-lg bg-blue-500 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-400 md:text-base"
+            >
+              <span>Regisster</span> <ArrowRightIcon className="w-5 md:w6" />
             </Link>
           </div>
         </div>

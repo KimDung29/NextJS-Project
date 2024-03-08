@@ -1,15 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type AuthState = {
-    userName: string ,
-    email: string ,
-    accessToken: string ,
+    accessToken: string | undefined,
+    user: {
+        name: string | null,
+        email: string | null,
+        id: string | null,
+    }
 }
 
 const initialState: AuthState = {
-    userName: '',
-    email: '',
     accessToken: '',
+    user: {
+        name: '',
+        email: '',
+        id: ''
+    }
 }
 
 const authSlice = createSlice({
@@ -17,9 +23,10 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         setAuth: (state, action: PayloadAction<AuthState>) => {
-            state.userName = action.payload.userName;
-            state.email = action.payload.email;
             state.accessToken = action.payload.accessToken;
+            state.user.id = action.payload.user.id;
+            state.user.email = action.payload.user.email;
+            state.user.name = action.payload.user.name;
         }
     }
 });

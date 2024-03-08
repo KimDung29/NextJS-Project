@@ -3,13 +3,12 @@ import Image from "next/image";
 import { AtSymbolIcon } from "@heroicons/react/24/outline";
 import { KeyIcon } from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { FormFieldType, GoToType } from "../lib/type-definitions";
-import { useFormState } from "react-dom";
-import { login } from "../lib/actions/auth";
-import { Provider } from "react-redux";
-import { parseJwt } from "../lib/util/util";
-import { FormLogin } from "../ui/form/form-login";
-import store from "../lib/store";
+import { signIn } from "next-auth/react";
+import { postMethod } from "../lib/fetch_api/method";
+import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { FormAuthErr, FormFieldType, GoToType } from "../lib/types";
+import FormAuth from "../ui/form/auth";
 
 const LoginForm: FormFieldType[] = [
   {
@@ -42,8 +41,63 @@ const GoTo: GoToType = {
 };
 
 const LoginPage = () => {
-  const initialState = { message: null, errors: {}, success: null };
-  const [state, dispatch] = useFormState(login, initialState);
+  const router = useRouter();
+
+  const [err, setErr] = useState({
+    errors: {
+      email: [],
+      password: [],
+      confirm_password: [],
+    },
+    message: "",
+  } as FormAuthErr);
+
+  const success = err.message === 'Login successful' ? true : false;
+  const message = err.message;
+
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const formValue = new FormData(form);
+    const email = formValue.get("email");
+    const password = formValue.get("password");
+
+    const fetchData = async () => {
+      try {
+        const res = await postMethod('/auth/login', {email, password});
+        if (!res.ok) {
+          const getErrors = await res.json();
+          setErr(getErrors);
+          throw new Error("Fail to login");
+        }
+
+        const response = await res.json();
+
+        setErr(pre => ({
+          ...pre,
+          message: response.message,
+        }));
+
+        const result = await signIn('credentials', {
+          email,
+          password,
+          redirect: false,
+          callbackUrl: '/',
+        });
+  
+        if (!result?.ok) {
+          throw new Error(result?.error || 'Login failed');
+        }
+  
+        if (result?.url) {
+          router.push(result.url);
+        }
+      } catch (error) {
+        console.log("There is an error: ", error);
+      }
+    };
+    fetchData();
+  };
 
   return (
     <main className="flex justify-center items-center p-8 ">
@@ -61,14 +115,14 @@ const LoginPage = () => {
           <h1 className="text-xl font-semibold mb-8">
             Please log in to continue
           </h1>
-          <Provider store={store}>
-            <FormLogin
+            <FormAuth
               data={LoginForm}
-              dispatch={dispatch}
-              state={state}
               goTo={GoTo}
+              message={message}
+              success={success}
+              handleSubmit={handleLogin}
+              err={err}
             />
-          </Provider>
         </div>
       </div>
     </main>

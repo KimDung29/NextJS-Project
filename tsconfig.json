@@ -19,9 +19,12 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/api/auth/[...nextauth]/route.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", 
+  "app/api/auth/[...nextauth]/route.js", "app/ui/*.ts","app/ui/**/*.ts",
+  "app/ui/**/**/*.tsx",
+  "app/lib/connect_db/mongoConnect.ts", "app/lib/types"],
   "exclude": ["node_modules"]
 }
