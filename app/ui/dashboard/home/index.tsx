@@ -3,7 +3,7 @@ import { RootState } from "@/app/lib/store";
 import { useSelector } from "react-redux";
 
 const DashboardHome = () => {
-  const auth = useSelector((state:RootState) => state.auth);
+  const user = useSelector((state:RootState) => state.user);
 
 //   const email = auth.user.email
 
@@ -22,11 +22,7 @@ const DashboardHome = () => {
 //       fetchData();
 //     }
 //   }, [email]);
-  
 
-
-  // const name = auth?.user.name;
-  // const email = auth?.user.email
 
     return (
         <div>home</div>

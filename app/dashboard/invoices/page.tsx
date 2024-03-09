@@ -1,13 +1,13 @@
 'use client'
 
+import { RootState } from "@/app/lib/store";
 import { useSelector } from "react-redux";
 
 const InvoicesPage = () => {
-  const auth = useSelector(state => state);
-  console.log('invoice : ', auth)
+  const user = useSelector((state: RootState) => state.user);
   return (
     <div>
-      <div>Invoice</div>
+      <div>Invoice: {user.name}</div>
     </div>
   );
 };
