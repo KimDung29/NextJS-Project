@@ -15,7 +15,7 @@ export default withAuth(
         return NextResponse.redirect(new URL('/dashboard', request.url))
       }
     } else {
-      if (pathname === '/dashboard') {
+      if (pathname.startsWith('/dashboard')) {
         return NextResponse.redirect(new URL('/', request.url))
       }
     }

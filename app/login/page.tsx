@@ -9,6 +9,8 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FormAuthErr, FormFieldType, GoToType } from "../lib/types";
 import FormAuth from "../ui/form/auth";
+import { setUser } from "../lib/redux/userSlice";
+import store from "../lib/store";
 
 const LoginForm: FormFieldType[] = [
   {
@@ -84,7 +86,6 @@ const LoginPage = () => {
           redirect: false,
           callbackUrl: '/',
         });
-  
         if (!result?.ok) {
           throw new Error(result?.error || 'Login failed');
         }
@@ -92,6 +93,7 @@ const LoginPage = () => {
         if (result?.url) {
           router.push(result.url);
         }
+
       } catch (error) {
         console.log("There is an error: ", error);
       }

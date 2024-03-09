@@ -62,7 +62,7 @@ const FormAuth = ({ data, goTo, message, handleSubmit, err, success }: FormAuthT
                 type="submit"
                 disabled={success ? true : false}
                 className={clsx(
-                  " text-white ",
+                  " text-white flex justify-between items-center py-3 px-4 w-full ",
                   { "bg-blue-700": !success },
                   { "bg-blue-400": success}
                 )}
@@ -79,7 +79,7 @@ const FormAuth = ({ data, goTo, message, handleSubmit, err, success }: FormAuthT
         </div>
         <button
           onClick={() => signIn('google', {callbackUrl:'/'})}
-          className="flex gap-4 justify-center">
+          className="flex justify-center gap-4 items-center py-3 px-4 w-full rounded-xl font-normal border">
           <Image src={'/google.png'} alt={''} width={24} height={24} />
           Login with google
         </button>

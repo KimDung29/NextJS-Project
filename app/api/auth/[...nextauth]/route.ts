@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
       name: 'Credentials',
       id: 'credentials',
       credentials: {
-        email: { label: "email", type: "email", placeholder: "example@gmail.com" },
+        email: { label: "Email", type: "email", placeholder: "example@gmail.com" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
@@ -74,6 +74,8 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ token, session }) {
       if (token) {
+        
+
         // session.user = session.user || {}; // Ensure session.user is defined
         // // if (token.name) {
         // //   session.user.name = token.name; // Assign token.name to session.user.name

@@ -65,7 +65,6 @@ export async function POST(req: NextRequest,) {
             name: user.name,
             email: user.email,
         };
-
         // // Create accessToken
         const accessToken = jwt.sign(
             accessTokenPayload,
@@ -88,7 +87,7 @@ export async function POST(req: NextRequest,) {
 
         return new Response(JSON.stringify({
             message: 'Login successful',
-            token: accessToken,
+            // token: accessToken,
             user: {
                 name: user.name,
                 email: user.email,
