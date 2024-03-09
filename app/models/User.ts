@@ -10,23 +10,11 @@ const UserSchema = new Schema(
             required: true, 
             unique: true
         },
-        avatar: {
-            data: {
-                type: Buffer,
-                required: false // Adjust avatar field to be optional
-            },
-            contentType: {
-                type: String,
-                required: false
-            },
-        },
+        avatar: {type: String},
         password: {
             type: String,
             required: true,
         }
-    },
-    {
-        timestamps: true
-    }
+    }, {timestamps: true}
 );
 export const User = models?.User || model('User', UserSchema);

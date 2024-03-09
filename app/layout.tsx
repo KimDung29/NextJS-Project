@@ -2,6 +2,7 @@ import "@/app/ui/globals.css";
 import type { Metadata } from "next";
 import { inter } from "@/app/ui/fonts";
 import { SessionContext } from "./ui/SessionContext";
+import { ReduxProvider } from "./ui/ReduxContext";
 
 export const metadata: Metadata = {
   title: {
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        {/* <ReduxProvider> */}
           <SessionContext>{children}</SessionContext>
+        {/* </ReduxProvider> */}
       </body>
     </html>
   );
