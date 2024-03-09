@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 import { User } from "@/app/models/User";
 import { NextRequest } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const email = body.email;
+    const email = await req.json();
   
     mongoose.connect(process.env.MONGO_URL as string)
   
@@ -22,4 +23,22 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     return new Response(JSON.stringify(error))
   }
+}
+
+export async function PUT(req: NextRequest) {
+  const data = await req.json();
+
+  mongoose.connect(process.env.MONGO_URL as string)
+
+  const session = await getServerSession(authOptions);
+  const email = session?.user?.email;
+
+  if('name' in data ){
+      await User.updateOne({email}, {name: data.name})
+      // console.log('first: ', {email, data})
+  }
+
+
+
+  return new Response(JSON.stringify('ok'))
 }
