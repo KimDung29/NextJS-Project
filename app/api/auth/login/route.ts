@@ -61,16 +61,16 @@ export async function POST(req: NextRequest,) {
         }
 
         // // Create payload for accessToken
-        const accessTokenPayload = {
-            name: user.name,
-            email: user.email,
-        };
+        // const accessTokenPayload = {
+        //     name: user.name,
+        //     email: user.email,
+        // };
         // // Create accessToken
-        const accessToken = jwt.sign(
-            accessTokenPayload,
-            secretKey,
-            { expiresIn: Math.floor(tokenExpiresDate.getTime()) }
-        );
+        // const accessToken = jwt.sign(
+        //     accessTokenPayload,
+        //     secretKey,
+        //     { expiresIn: Math.floor(tokenExpiresDate.getTime()) }
+        // );
 
         // const refreshToken = jwt.sign(
         //     accessTokenPayload,

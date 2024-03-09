@@ -37,7 +37,6 @@ const Header = () => {
   const pathname =
     path && path.includes("/") ? path.split("/").slice(-1) : path;
   const userAvatar = "";
-
   return (
     <div className="bg-gray-50 ">
       <div className="flex justify-between items-center px-4 py-2">

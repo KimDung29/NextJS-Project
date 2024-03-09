@@ -26,7 +26,6 @@ const CreateUserSchema = z.object({
 export async function POST(req: NextRequest, res: NextResponse) {
     try {
         const body = await req.json();
-        console.log('body: ', body)
 
         mongoose.connect(process.env.MONGO_URL as string);
 
@@ -35,7 +34,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
         // Handle validation errors
         if (!validatedFields.success) {
-            console.log('va: ', validatedFields.error)
             return new Response(JSON.stringify({
                 errors: validatedFields.error.flatten().fieldErrors ,
                 message: 'Failed to Create User!',
@@ -45,7 +43,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
         // Extract validated data
         const { name, email, password, avatar } = validatedFields.data;
 
-        console.log('after vali: ', avatar)
         // Check if email already exists
         const existingUser = await User.findOne({ email: email });
 
