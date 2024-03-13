@@ -74,7 +74,7 @@ const LoginPage = () => {
         }
 
         const response = await res.json();
-
+console.log('login: ', response)
         setErr(pre => ({
           ...pre,
           message: response.message,

@@ -1,44 +1,20 @@
-import { NextRequest } from "next/server";
-
+import { UploadImage } from "@/app/lib/upload/upload";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const data =  await req.formData();
-  if (data.get('file')) {
-    // upload the file
-    const file = data.get('file');
+   try {
+      const formData =  await req.formData();
+        // upload the file
+       const image = formData.get('file') as unknown as File;
+    
+       const data:any = await UploadImage(image, "NextJSProject")
+    
+       const url = data && data?.secure_url;
+    
+       return NextResponse.json({msg: url}, {status: 200});
+      
+   } catch (error) {
+      return NextResponse.json(error)
+    }
 
-
-
-    // const s3Client = new S3Client({
-    //   region: 'us-east-1',
-    //   credentials: {
-    //     accessKeyId: process.env.MY_AWS_ACCESS_KEY,
-    //     secretAccessKey: process.env.MY_AWS_SECRET_KEY,
-    //   },
-    // });
-
-    // const ext = file.name.split('.').slice(-1)[0];
-    // const newFileName = uniqid() + '.' + ext;
-
-    // const chunks = [];
-    // for await (const chunk of file.stream()) {
-    //   chunks.push(chunk);
-    // }
-    // const buffer = Buffer.concat(chunks);
-
-    // const bucket = 'dawid-food-ordering';
-    // await s3Client.send(new PutObjectCommand({
-    //   Bucket: bucket,
-    //   Key: newFileName,
-    //   ACL: 'public-read',
-    //   ContentType: file.type,
-    //   Body: buffer,
-    // }));
-
-
-    // const link = 'https://'+bucket+'.s3.amazonaws.com/'+newFileName;
-    const link = ''
-    return Response.json(link);
-  }
-  return Response.json(true);
 }

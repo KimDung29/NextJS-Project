@@ -1,14 +1,12 @@
-"use client";
 import Image from "next/image";
-import { signOut } from "next-auth/react";
 import { NavBarListRouteType } from "@/app/lib/types";
 import {
   ClipboardDocumentIcon,
   HomeIcon,
   UserGroupIcon,
-  ArrowUpRightIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import Logout from "./logout";
 
 const NavBarListRoute: NavBarListRouteType[] = [
   {
@@ -57,17 +55,7 @@ const NavBar = () => {
           ))}
         </div>
       </div>
-      <div className="h-16">
-        <div
-          onClick={() => signOut()}
-          className="flex  hover:text-blue-700 hover:bg-blue-100 hover:cursor-pointer pl-4 py-4"
-        >
-          <div className="flex items-center justify-center">
-            <p>Sigout</p>
-            <ArrowUpRightIcon className="w-4 h-4 ml-2" />
-          </div>
-        </div>
-      </div>
+      <Logout />
     </div>
   );
 };

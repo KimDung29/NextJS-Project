@@ -4,12 +4,14 @@ export type UserState = {
     name: string | null,
     email: string | null,
     id: string | null,
+    avatar: string | null,
 }
 
 const initialState: UserState = {
     name: '',
     email: '',
-    id: ''
+    id: '', 
+    avatar: '',
 }
 
 const userSlice = createSlice({
@@ -20,6 +22,7 @@ const userSlice = createSlice({
             state.id = action.payload.id;
             state.name = action.payload.name;
             state.email = action.payload.email;
+            state.avatar = action.payload.avatar;
         }
     }
 });

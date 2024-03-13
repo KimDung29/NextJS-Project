@@ -4,10 +4,19 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: '*.googleusercontent.com'
+                hostname: '*.googleusercontent.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'images.unsplash.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'res.cloudinary.com',
             }
         ]
     }
 };
 
 export default nextConfig;
+
