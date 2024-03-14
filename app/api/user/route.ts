@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     mongoose.connect(process.env.MONGO_URL as string)
   
     const user = await User.findOne({email});
-    if(!user) return new Response(JSON.stringify('User not found'));
+    if(!user) return NextResponse.json('User not found');
   
     const resUser = {
       id: user._id,
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
       avatar: user.avatar,
     } 
   
-    return new Response(JSON.stringify(resUser))
+    return NextResponse.json(resUser)
   } catch (error) {
     return NextResponse.json(error)
   }

@@ -49,18 +49,21 @@ const Header = () => {
         <Link href={"/dashboard/profile"} className="flex items-center">
           <p className="mr-2 font-bold capitalize text-gray-700">Hi, {userName}</p>
           {user.avatar && (
-            <div className="w-14 h-14 rounded-full bg-blue-400 overflow-hidden">
-              <Image
-                src={user?.avatar || "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"}
-                alt="avatar"
-                width={60}
-                height={40}
-                objectFit="cover"
-                className=""
-              />
+              <div className="w-14 h-14 rounded-full bg-blue-400 overflow-hidden">
+                <Image
+                  src={
+                    user?.avatar ||
+                    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  }
+                  alt="avatar"
+                  width={40}
+                  height={40}
+                  objectFit="cover"
+                  className="rounded-full w-full h-full "
+                />
+              </div>
+            )}
 
-            </div>
-          ) }
         </Link>
       </div>
     </div>
