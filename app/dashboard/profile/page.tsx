@@ -37,7 +37,7 @@ const ProfilePage = () => {
       if (files?.length === 1) {
         const data = new FormData();
         data.set("file", files[0]);
-        await uploadMethod("/upload", data);
+        toast.loading('Uploading...')
         const response = await uploadMethod("/upload", data);
         if (!response.ok) {
           throw new Error("Failed to upload image.");
@@ -48,6 +48,8 @@ const ProfilePage = () => {
           ...prevValue,
           avatar: result.msg,
         }));
+        toast.dismiss();
+        toast.success ('Upload complete!')
       }
     } catch (error) {
       console.log("Error: ", error);
@@ -65,19 +67,22 @@ const ProfilePage = () => {
   const handleSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const savingPromise = new Promise<void>(async (resolve, reject) => {
+    try {
+      toast.loading('Saving...')
       const res = await putMethod("/user", value);
-      if (res.ok) resolve();
-      else reject();
-    });
-
-    await toast.promise(savingPromise, {
-      loading: "Saving...",
-      success: "Profile saved!",
-      error: "Error",
-    });
-    window.location.reload();
+      if (!res.ok) {
+        throw new Error("Failed to upload image.");
+      }
+      toast.dismiss();
+      toast.success('Profile saved!');
+      window.location.reload();
+      
+    } catch (error) {
+      console.log('Error: ', error);
+      toast.error('Fail to save the information!')
+    }
   };
+  
   return (
     <div>
       <FormProfile  

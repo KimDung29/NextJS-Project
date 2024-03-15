@@ -1,8 +1,6 @@
 "use client";
 import { postMethod } from "@/app/lib/fetch_api/method";
 import { setUser } from "@/app/lib/redux/userSlice";
-import store, { RootState } from "@/app/lib/store";
-import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
